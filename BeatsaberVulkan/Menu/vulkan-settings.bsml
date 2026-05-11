@@ -1,0 +1,8 @@
+<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='https://monkeymanboy.github.io/BSML-Docs/BSMLSchema.xsd'>
+    <vertical>
+        <text id="status-text" text="" font-size="6" align="Center"/>
+        <text id="auto-relaunch-text" text="" font-size="5" align="Center"/>
+        <button text="Toggle Auto Relaunch" on-click="toggle-auto-relaunch"/>
+        <button text="Relaunch With Vulkan" on-click="relaunch-vulkan"/>
+    </vertical>
+</bg>

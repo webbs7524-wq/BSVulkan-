@@ -1,0 +1,17 @@
+{
+   "$schema" : "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
+   "id" : "BeatsaberVulkan",
+   "name" : "BeatsaberVulkan",
+   "author" : "TurboBeatz",
+   "version" : "0.0.1",
+   "gameVersion" : "1.40.8",
+   "description" : "FPS BOOSTER HOPEFULLY",
+   "dependsOn" : {
+      "BSIPA" : "^4.3.0",
+      "BeatSaberMarkupLanguage" : "^1.12.0",
+      "SiraUtil" : "^3.1.0"
+   },
+   "misc" : {
+      "generated-by" : "BSMT.Tasks/2.0.0.0"
+   }
+}
