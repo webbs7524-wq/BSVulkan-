@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("FPS BOOSTER HOPEFULLY")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("0.0.1.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.1+b8810ca4c5c28feed2b911e1de45dc71d83c5fd9")]
 [assembly: System.Reflection.AssemblyProductAttribute("BeatsaberVulkan")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BeatsaberVulkan")]
 [assembly: System.Reflection.AssemblyVersionAttribute("0.0.1.0")]

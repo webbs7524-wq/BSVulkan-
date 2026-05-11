@@ -8,7 +8,7 @@ internal class VulkanSettingsMenu
     private readonly VulkanApiManager vulkanApiManager;
 
     [UIComponent("status-text")] private readonly TextMeshProUGUI statusText = null!;
-    [UIComponent("auto-relaunch-text")] private readonly TextMeshProUGUI autoRelaunchText = null!;
+    [UIComponent("dxvk-status-text")] private readonly TextMeshProUGUI dxvkStatusText = null!;
 
     public VulkanSettingsMenu(VulkanApiManager vulkanApiManager)
     {
@@ -21,24 +21,9 @@ internal class VulkanSettingsMenu
         RefreshText();
     }
 
-    [UIAction("toggle-auto-relaunch")]
-    private void ToggleAutoRelaunch()
-    {
-        vulkanApiManager.IsAutoRelaunchEnabled = !vulkanApiManager.IsAutoRelaunchEnabled;
-        RefreshText();
-    }
-
-    [UIAction("relaunch-vulkan")]
-    private void RelaunchVulkan()
-    {
-        vulkanApiManager.RelaunchWithVulkan();
-    }
-
     private void RefreshText()
     {
         statusText.text = vulkanApiManager.StatusText;
-        autoRelaunchText.text = vulkanApiManager.IsAutoRelaunchEnabled
-            ? "Automatic Vulkan relaunch: On"
-            : "Automatic Vulkan relaunch: Off";
+        dxvkStatusText.text = vulkanApiManager.DxvkStatusText;
     }
 }

@@ -41,6 +41,7 @@ internal class VulkanApiManager : IInitializable
         set
         {
             pluginConfig.ForceVulkanOnLaunch = value;
+            pluginConfig.VulkanRelaunchPending = false;
             pluginConfig.Changed();
         }
     }
@@ -49,28 +50,54 @@ internal class VulkanApiManager : IInitializable
 
     public bool IsUsingVulkan => CurrentGraphicsApi == GraphicsDeviceType.Vulkan;
 
+    public bool IsDxvkInstalled => File.Exists(Path.Combine(GetGameDirectory(), "d3d11.dll")) &&
+                                   File.Exists(Path.Combine(GetGameDirectory(), "dxgi.dll"));
+
     public string StatusText =>
         IsUsingVulkan
-            ? "Graphics API: Vulkan"
-            : $"Graphics API: {CurrentGraphicsApi}. Relaunch required for Vulkan.";
+            ? "Native Unity graphics API: Vulkan"
+            : IsDxvkInstalled
+                ? $"Unity graphics API: {CurrentGraphicsApi}. DXVK is installed for Vulkan translation."
+                : $"Unity graphics API: {CurrentGraphicsApi}. Install DXVK to run through Vulkan.";
+
+    public string DxvkStatusText =>
+        IsDxvkInstalled
+            ? "DXVK wrapper: Installed"
+            : "DXVK wrapper: Not installed";
 
     public void Initialize()
     {
         Plugin.Log.Info($"Current graphics API: {CurrentGraphicsApi}");
+        Plugin.Log.Info(IsDxvkInstalled
+            ? "DXVK d3d11.dll and dxgi.dll are installed next to Beat Saber.exe."
+            : "DXVK d3d11.dll and dxgi.dll were not found next to Beat Saber.exe.");
 
-        if (!pluginConfig.ForceVulkanOnLaunch)
+        if (IsUsingVulkan)
         {
-            Plugin.Log.Info("Automatic Vulkan relaunch is disabled in the config.");
+            ClearPendingRelaunch();
+            Plugin.Log.Info("Beat Saber is already running with Vulkan.");
             return;
         }
 
-        RelaunchIfNeeded();
+        if (pluginConfig.ForceVulkanOnLaunch || pluginConfig.VulkanRelaunchPending)
+        {
+            Plugin.Log.Warn(
+                "Beat Saber 1.40.8 was not built with Unity's native Vulkan renderer. " +
+                "Disabling native Vulkan relaunch; use DXVK translation instead.");
+            pluginConfig.ForceVulkanOnLaunch = false;
+            pluginConfig.VulkanRelaunchPending = false;
+            pluginConfig.Changed();
+            return;
+        }
+
+        Plugin.Log.Info("Native Unity Vulkan relaunch is disabled.");
     }
 
     public bool RelaunchIfNeeded()
     {
         if (IsUsingVulkan)
         {
+            ClearPendingRelaunch();
             Plugin.Log.Info("Beat Saber is already running with Vulkan.");
             return false;
         }
@@ -80,6 +107,9 @@ internal class VulkanApiManager : IInitializable
             Plugin.Log.Warn(
                 $"Beat Saber was started with {ForceVulkanArgument}, but Unity reports {CurrentGraphicsApi}. " +
                 "Not relaunching again to avoid a loop.");
+            pluginConfig.ForceVulkanOnLaunch = false;
+            pluginConfig.VulkanRelaunchPending = false;
+            pluginConfig.Changed();
             return false;
         }
 
@@ -100,6 +130,8 @@ internal class VulkanApiManager : IInitializable
 
         try
         {
+            MarkPendingRelaunch();
+
             Process.Start(new ProcessStartInfo
             {
                 FileName = executablePath,
@@ -117,6 +149,24 @@ internal class VulkanApiManager : IInitializable
             Plugin.Log.Error($"Failed to relaunch Beat Saber with {ForceVulkanArgument}: {exception}");
             return false;
         }
+    }
+
+    private void MarkPendingRelaunch()
+    {
+        pluginConfig.ForceVulkanOnLaunch = false;
+        pluginConfig.VulkanRelaunchPending = true;
+        pluginConfig.Changed();
+    }
+
+    private void ClearPendingRelaunch()
+    {
+        if (!pluginConfig.VulkanRelaunchPending)
+        {
+            return;
+        }
+
+        pluginConfig.VulkanRelaunchPending = false;
+        pluginConfig.Changed();
     }
 
     private static bool HasArgument(IEnumerable<string> arguments, string targetArgument) =>
@@ -183,6 +233,9 @@ internal class VulkanApiManager : IInitializable
         var executablePath = Path.Combine(gameDirectory, executableName);
         return File.Exists(executablePath) ? executablePath : null;
     }
+
+    private static string GetGameDirectory() =>
+        Path.GetDirectoryName(GetExecutablePath() ?? string.Empty) ?? Environment.CurrentDirectory;
 
     private static string QuoteArgument(string argument)
     {

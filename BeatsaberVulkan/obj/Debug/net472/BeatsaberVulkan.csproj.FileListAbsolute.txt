@@ -30,3 +30,4 @@ C:\Users\webbs\RiderProjects\BeatsaberVulkan\BeatsaberVulkan\obj\Debug\net472\Be
 C:\Users\webbs\RiderProjects\BeatsaberVulkan\BeatsaberVulkan\obj\Debug\net472\Beatsabe.630FA077.Up2Date
 C:\Users\webbs\RiderProjects\BeatsaberVulkan\BeatsaberVulkan\obj\Debug\net472\BeatsaberVulkan.dll
 C:\Users\webbs\RiderProjects\BeatsaberVulkan\BeatsaberVulkan\obj\Debug\net472\BeatsaberVulkan.pdb
+C:\Users\webbs\RiderProjects\BeatsaberVulkan\BeatsaberVulkan\obj\Debug\net472\BeatsaberVulkan.sourcelink.json
