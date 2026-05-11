@@ -26,5 +26,6 @@ internal class AppInstaller : Installer
         Container.BindInstance(pluginConfig).AsSingle();
 
         Container.BindInterfacesAndSelfTo<VulkanApiManager>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PerformanceOverlayController>().AsSingle();
     }
 }

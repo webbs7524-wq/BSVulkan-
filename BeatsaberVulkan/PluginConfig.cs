@@ -15,6 +15,10 @@ internal class PluginConfig
     // public virtual Color TheColor { get; set; } = new Color(0.12f, 0.34f, 0.56f);
     public virtual bool ForceVulkanOnLaunch { get; set; } = false;
     public virtual bool VulkanRelaunchPending { get; set; } = false;
+    public virtual bool ShowPerformanceOverlay { get; set; } = true;
+    public virtual bool EnableFpsUnlocker { get; set; } = true;
+    public virtual float OverlayUpdateInterval { get; set; } = 0.25f;
+    public virtual float OverlayScale { get; set; } = 0.0011f;
 
     /*
     /// <summary>

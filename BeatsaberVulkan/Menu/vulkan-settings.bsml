@@ -2,5 +2,9 @@
     <vertical>
         <text id="status-text" text="" font-size="6" align="Center"/>
         <text id="dxvk-status-text" text="" font-size="5" align="Center"/>
+        <text id="overlay-status-text" text="" font-size="5" align="Center"/>
+        <button text="Toggle Performance Overlay" on-click="toggle-overlay"/>
+        <text id="fps-unlocker-status-text" text="" font-size="5" align="Center"/>
+        <button text="Toggle FPS Unlocker" on-click="toggle-fps-unlocker"/>
     </vertical>
 </bg>
